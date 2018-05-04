@@ -1,0 +1,16 @@
+{
+  "version": "0.1.0",
+  "configurations": [
+      {
+          "type": "chrome",
+          "request": "launch",
+          "name": "[Backend] Docker: Launch chrome",
+          "port": 9229,
+          "address": "localhost",
+          "localRoot": "${workspaceRoot}/product/backend",
+          "webRoot": "${workspaceRoot}/product/backend",
+          "remoteRoot": "/app/backend",
+          "protocol": "inspector"
+      }
+  ]
+}
