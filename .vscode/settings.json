@@ -1,0 +1,21 @@
+{
+  "editor.tabSize": 2,
+  "editor.tabCompletion": true,
+  "files.trimTrailingWhitespace": true,
+  "editor.renderWhitespace": "none",
+  "editor.renderIndentGuides": true,
+  "tslint.enable": true,
+  "tslint.configFile": "./tslint.json",
+  "tslint.autoFixOnSave": true,
+  "window.zoomLevel": -1,
+  "workbench.activityBar.visible": true,
+  "editor.minimap.enabled": false,
+  "extensions.ignoreRecommendations": false,
+  "typescript.tsserver.log": "verbose",
+  "editor.multiCursorModifier": "alt",
+  "files.exclude": {
+    "**/dist/**/*.js": true,
+    "**/dist/**/*.js.map": true
+  },
+  "git.ignoreLimitWarning": true
+}
