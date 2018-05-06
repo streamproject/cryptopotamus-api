@@ -1,7 +1,15 @@
 import * as bodyParser from 'body-parser'
+import * as compression from 'compression'
+import * as ConnectDatadog from 'connect-datadog'
+import * as cookieParser from 'cookie-parser'
+import * as cors from 'cors'
+import * as methodOverride from 'method-override'
+import * as morgan from 'morgan'
 import * as path from 'path'
-import { GlobalAcceptMimesMiddleware, GlobalErrorHandlerMiddleware,
-  ServerLoader, ServerSettings } from '@tsed/common'
+import {
+  GlobalAcceptMimesMiddleware, GlobalErrorHandlerMiddleware,
+  ServerLoader, ServerSettings,
+} from 'ts-express-decorators'
 import { ENV, PORT } from './config'
 
 const rootDir = path.resolve(__dirname)
@@ -30,9 +38,15 @@ export default class Server extends ServerLoader {
 
   public $onMountingMiddlewares() {
     this
+      .use(morgan('combined'))
       .use(GlobalAcceptMimesMiddleware)
       .use(bodyParser.json())
       .use(bodyParser.urlencoded({ extended: true }))
+      .use(compression())
+      .use(methodOverride())
+      .use(cors())
+      .use(ConnectDatadog({ response_code: true, tags: ['app:stream'] }))
+      .use(cookieParser())
 
     if (!this.getSettingsService().debug) {
       this.set('trust proxy', 1)
