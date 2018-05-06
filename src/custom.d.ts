@@ -17,3 +17,6 @@ declare module '*.json' {
 interface Error {
   status?: number
 }
+
+declare module 'uuid'
+declare module 'passport-twitch'
