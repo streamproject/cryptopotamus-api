@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { stringify } from 'qs'
-import { Authenticated, BodyParams, Controller, HeaderParams, Post, Request, Required } from 'ts-express-decorators'
+import { Authenticated, BodyParams, Controller, Post, Request } from 'ts-express-decorators'
 import { users } from '../db/postgres'
 
 @Controller('/user')
@@ -24,18 +24,21 @@ export class UserController {
     return await users.deleteUser(request.decoded.id)
   }
 
-  @Post('/sendNotification')
+  @Post('/sendTestNotification')
+  @Authenticated()
   public async sendNotification(
-    @Required @HeaderParams('Authorization') token: string,
+    @Request() request: Express.Request,
+    @BodyParams('message') message: string,
+    @BodyParams('name') name: string,
+    @BodyParams('value') value: string,
   ) {
+    const user = await users.findUser(request.decoded.id)
     const data = stringify({
-      access_token: token,
+      access_token: user.streamlabs_token,
       type: 'donation',
-      image_href: 'https://www.randomwebsite.com/monkey.gif',
-      sound_href: 'https://www.randomwebsite.com/honksound.wav',
-      message: 'Your streams are the best!',
-      duration: '3000',
-      special_text_color: 'Orange',
+      message: name + 'donated' + value + 'eth',
+      user_message: message,
+      duration: '1000',
     })
 
     return axios.post('https://streamlabs.com/api/v1.0/alerts', data).then((res) => {
