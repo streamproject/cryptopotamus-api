@@ -17,8 +17,7 @@ export default class AuthorizeMiddleware implements IMiddleware {
       next(new Unauthorized('no acccess token bitch'))
     }
 
-    axios.get(`https://id.twitch.tv/oauth2/validate`, { headers: { Authorization: 'OAuth ' + accessToken } })
-      .then((res) => {
+    axios.get(`https://id.twitch.tv/oauth2/validate`, { headers: { Authorization: `OAuth ${accessToken}` } }).then((res) => {
         request.decoded = { id: res.data.user_id }
         next()
       }).catch((err) => {
