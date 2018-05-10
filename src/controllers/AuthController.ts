@@ -1,5 +1,5 @@
 import { Controller, Get, Request, Res, Response } from 'ts-express-decorators'
-import { ENV } from '../config'
+import { baseUrl } from '../config'
 import { users } from '../db/postgres'
 import { passportInstance } from '../services/PassportService'
 
@@ -27,8 +27,6 @@ export class AuthController {
           reject(err)
         }
 
-        const baseUrl = ENV === 'production' ? 'https://cryptopotam.us' : 'http://localhost:3000'
-
         resolve(response.redirect(`${baseUrl}/setup?access_token=${data.accessToken}`))
       })(request, response, () => {
       })
@@ -55,7 +53,6 @@ export class AuthController {
         if (err) {
           reject(err)
         }
-        const baseUrl = ENV === 'production' ? 'https://cryptopotam.us' : 'http://localhost:3000'
 
         users.updateUser(data.user.twitch_id, null, data.accessToken)
         resolve(response.redirect(`${baseUrl}/donate/${data.user.twitch_id}`))
