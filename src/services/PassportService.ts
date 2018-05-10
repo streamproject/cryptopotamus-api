@@ -39,11 +39,14 @@ export class PassportService implements BeforeRoutesInit {
       ...streamlabsStrategyOptions,
     },
       async (accessToken, refreshToken, profile, done) => {
-        //TO DO : What if user doens't have twitch connected w/ streamlabs?
         const user = await users.findUser(profile._json.twitch.id)
-
-        done(null, { user, refreshToken, accessToken })
-      }),
+        if (!user) {
+          done('No twitch ID/ user not found!', {})
+        } else {
+          done(null, { user, refreshToken, accessToken })
+        }
+        },
+      ),
     )
   }
 
