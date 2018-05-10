@@ -2,25 +2,28 @@
   "compilerOptions": {
     "target": "es2015",
     "lib": [
-      "es2015",
+      "es6",
       "dom"
     ],
     "typeRoots": [
       "./node_modules/@types"
     ],
     "module": "commonjs",
+    "outDir": "dist",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "sourceMap": true,
-    "declaration": false
+    "declaration": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true
   },
   "include": [
     "./src/**/*.ts",
-    "./test/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "./public"
+    "node_modules"
   ]
 }
