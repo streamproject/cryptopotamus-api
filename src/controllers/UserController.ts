@@ -2,6 +2,7 @@ import axios from 'axios'
 import { stringify } from 'qs'
 import { Authenticated, BodyParams, Controller, Post, Request } from 'ts-express-decorators'
 import { users } from '../db/postgres'
+import { decrypt, encrypt } from '../utils/crypto'
 
 @Controller('/user')
 export class UserController {
@@ -13,7 +14,7 @@ export class UserController {
     @BodyParams('ethAddress') ethAddress?: string,
     @BodyParams('streamlabsToken') streamlabsToken?: string,
   ) {
-    return await users.updateUser(request.decoded.id, ethAddress, streamlabsToken)
+    return await users.updateUser(request.decoded.id, ethAddress, encrypt(streamlabsToken))
   }
 
   @Post('/delete')
@@ -34,7 +35,7 @@ export class UserController {
   ) {
     const user = await users.findUser(request.decoded.id)
     const data = stringify({
-      access_token: user.streamlabs_token,
+      access_token: decrypt(user.streamlabs_token),
       type: 'donation',
       message: name + 'donated' + value + 'eth',
       user_message: message,

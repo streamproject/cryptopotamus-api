@@ -1,8 +1,6 @@
-import axios from 'axios'
-import { stringify } from 'qs'
-import { Controller, Get, QueryParams, Request, Res, Response } from 'ts-express-decorators'
-import { streamlabsToken, twitchToken } from '../apiOptionsConfig'
-import { ENV } from '../config'
+import { Controller, Get, Request, Res, Response } from 'ts-express-decorators'
+import { baseUrl } from '../config'
+import { users } from '../db/postgres'
 import { passportInstance } from '../services/PassportService'
 
 @Controller('/auth')
@@ -20,20 +18,18 @@ export class AuthController {
 
   @Get('/twitch/callback')
   public callbackTwitch(
-    @QueryParams('code') code: string,
+    @Request() request: Express.Request,
     @Response() response: any,
   ) {
-    const data = stringify({
-      ...twitchToken,
-      code,
-    })
+    return new Promise((resolve, reject) => {
+      passportInstance.authenticate('twitch', (err, data) => {
+        if (err) {
+          reject(err)
+        }
 
-    const baseUrl = ENV === 'production' ? 'https://cryptopotam.us' : 'http://localhost:3000'
-
-    return axios.post(`https://id.twitch.tv/oauth2/token`, data).then((res) => {
-      response.redirect(`${baseUrl}/setup?access_token=${res.data.access_token}`)
-    }).catch((err) => {
-      return err.response.data
+        resolve(response.redirect(`${baseUrl}/setup?access_token=${data.accessToken}`))
+      })(request, response, () => {
+      })
     })
   }
 
@@ -49,16 +45,19 @@ export class AuthController {
 
   @Get('/streamlabs/callback')
   public callbackStreamlabs(
-    @QueryParams('code') code: string,
+    @Request() request: Express.Request,
+    @Response() response: any,
   ) {
-    return axios.post(`https://streamlabs.com/api/v1.0/token`, {
-      ...streamlabsToken,
-      code,
-    })
-      .then((res) => {
-        return res.data
-      }).catch((err) => {
-        return err.response.data
+    return new Promise((resolve, reject) => {
+      passportInstance.authenticate('streamlabs', (err, data) => {
+        if (err) {
+          reject(err)
+        }
+
+        users.updateUser(data.user.twitch_id, null, data.accessToken)
+        resolve(response.redirect(`${baseUrl}/donate/${data.user.twitch_id}`))
+      })(request, response, () => {
       })
+    })
   }
 }
