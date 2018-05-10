@@ -1,14 +1,14 @@
 import * as pgPromise from 'pg-promise'
 // import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASS, POSTGRES_USER } from '../config'
 import * as genUuid from 'uuid/v4'
-import { PG_DB, PG_HOST, PG_PASS, PG_USER, PORT } from '../config'
+import { PG_DB, PG_HOST, PG_PASS, PG_PORT, PG_USER } from '../config'
 import * as tables from '../models/tables'
 
 const cn = {
   database: PG_DB,
   host: PG_HOST,
   password: PG_PASS,
-  port: PORT,
+  port: PG_PORT,
   user: PG_USER,
 }
 

@@ -30,6 +30,7 @@ export class PassportService implements BeforeRoutesInit {
         if (!user) {
           user = await users.addNewUser(profile.id)
         }
+
         done(null, { user, refreshToken, accessToken })
       }),
     )
@@ -38,7 +39,8 @@ export class PassportService implements BeforeRoutesInit {
       ...streamlabsStrategyOptions,
     },
       async (accessToken, refreshToken, profile, done) => {
-        const user = await users.findUser(profile.id)
+        //TO DO : What if user doens't have twitch connected w/ streamlabs?
+        const user = await users.findUser(profile._json.twitch.id)
 
         done(null, { user, refreshToken, accessToken })
       }),
