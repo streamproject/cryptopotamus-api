@@ -1,6 +1,5 @@
 import * as bodyParser from 'body-parser'
 import * as compression from 'compression'
-import * as ConnectDatadog from 'connect-datadog'
 import * as cookieParser from 'cookie-parser'
 import * as cors from 'cors'
 import * as methodOverride from 'method-override'
@@ -45,7 +44,6 @@ export default class Server extends ServerLoader {
       .use(compression())
       .use(methodOverride())
       .use(cors())
-      .use(ConnectDatadog({ response_code: true, tags: ['app:stream'] }))
       .use(cookieParser())
 
     if (!this.getSettingsService().debug) {
