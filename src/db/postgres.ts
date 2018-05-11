@@ -64,6 +64,10 @@ export const users = {
     return postgresdb.oneOrNone<tables.users>(`SELECT * FROM users WHERE twitch_id=$(twitchId)`, { twitchId })
   },
 
+  findUserByAddress(address: string) {
+    return postgresdb.oneOrNone<tables.users>(`SELECT * FROM users WHERE eth_address=$(address)`, { address })
+  },
+
   deleteUser(twitchId: string) {
     return postgresdb.none(`DELETE FROM users WHERE twitch_id=$(twitchId)`, { twitchId })
   },
