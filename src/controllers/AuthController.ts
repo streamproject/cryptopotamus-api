@@ -26,8 +26,7 @@ export class AuthController {
           reject(err)
         }
 
-
-        resolve(response.redirect(`${baseUrl}/setup?access_token=${data.accessToken}`))
+        resolve(response.redirect(`${baseUrl}/setup/${data.accessToken}`))
       })(request, response, () => { })
     })
   }
