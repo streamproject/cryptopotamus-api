@@ -12,8 +12,7 @@ export class AuthController {
     @Res() response: Express.Response,
   ) {
     passportInstance.authenticate('twitch', () => {
-    })(request, response, () => {
-    })
+    })(request, response, () => { })
   }
 
   @Get('/twitch/callback')
@@ -27,9 +26,9 @@ export class AuthController {
           reject(err)
         }
 
-        resolve(response.redirect(`${baseUrl}/setup/${data.accessToken}`))
-      })(request, response, () => {
-      })
+
+        resolve(response.redirect(`${baseUrl}/setup?access_token=${data.accessToken}`))
+      })(request, response, () => { })
     })
   }
 
@@ -39,8 +38,7 @@ export class AuthController {
     @Res() response: Express.Response,
   ) {
     passportInstance.authenticate('streamlabs', () => {
-    })(request, response, () => {
-    })
+    })(request, response, () => { })
   }
 
   @Get('/streamlabs/callback')
@@ -55,9 +53,8 @@ export class AuthController {
         }
 
         users.updateUser(data.user.twitch_id, null, data.accessToken)
-        resolve(response.redirect(`${baseUrl}/testalerts`))
-      })(request, response, () => {
-      })
+        resolve(response.redirect(`${baseUrl}/donate/${data.user.twitch_id}`))
+      })(request, response, () => { })
     })
   }
 }
