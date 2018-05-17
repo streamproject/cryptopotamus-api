@@ -2,6 +2,7 @@ import { Controller, Get, Request, Res, Response } from 'ts-express-decorators'
 import { baseUrl } from '../config'
 import { users } from '../db/postgres'
 import { passportInstance } from '../services/PassportService'
+import { encrypt } from '../utils/crypto'
 
 @Controller('/auth')
 export class AuthController {
@@ -51,7 +52,7 @@ export class AuthController {
           reject(err)
         }
 
-        users.updateUser(data.user.twitch_id, null, data.accessToken)
+        users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
         resolve(response.redirect(`${baseUrl}/donate/${data.user.twitch_id}`))
       })(request, response, () => { })
     })
