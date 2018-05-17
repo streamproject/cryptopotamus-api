@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { stringify } from 'qs'
 import { Authenticated, BodyParams, Controller, Post, Request } from 'ts-express-decorators'
+import { BadRequest, NotFound } from 'ts-httpexceptions';
 import { users } from '../db/postgres'
 import { EthService } from '../services/EthService'
 import { decrypt, encrypt } from '../utils/crypto'
-import { BadRequest, NotFound } from 'ts-httpexceptions';
 
 @Controller('/user')
 export class UserController {
