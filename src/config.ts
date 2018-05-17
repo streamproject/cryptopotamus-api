@@ -1,6 +1,6 @@
 export const ENV = process.env.NODE_ENV
 
-export const WEB3_PROVIDER_URI = 'wss://mainnet.infura.io/_ws'
+export const WEB3_PROVIDER_URI = ENV === 'production' ? 'wss://mainnet.infura.io/_ws' : 'https://ropsten.infura.io/'
 
 export const PORT = 8000
 

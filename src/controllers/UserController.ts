@@ -5,7 +5,7 @@ import { BadRequest, NotFound } from 'ts-httpexceptions'
 import { TWITCH_CLIENT_ID } from '../config'
 import { users } from '../db/postgres'
 import { EthService } from '../services/EthService'
-import { decrypt, encrypt } from '../utils/crypto'
+import { decrypt } from '../utils/crypto'
 
 @Controller('/user')
 export class UserController {
@@ -56,10 +56,9 @@ export class UserController {
   @Authenticated()
   public async update(
     @Request() request: Express.Request,
-    @BodyParams('ethAddress') ethAddress?: string,
-    @BodyParams('streamlabsToken') streamlabsToken?: string,
+    @BodyParams('ethAddress') ethAddress: string,
   ) {
-    return await users.updateUser(request.decoded.id, ethAddress, encrypt(streamlabsToken))
+    return await users.updateUser(request.decoded.id, ethAddress)
   }
 
   @Post('/delete')
@@ -120,7 +119,7 @@ export class UserController {
         type: 'donation',
         message: `${name} donated ${value} eth`,
         user_message: message,
-        duration: '1000',
+        duration: '3000',
       })
 
       try {
