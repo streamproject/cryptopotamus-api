@@ -98,7 +98,6 @@ export class UserController {
   @Post('/sendTx')
   @Authenticated()
   public async sendTx(
-    @Request() request: Express.Request,
     @BodyParams('txHash') txHash: string,
     @BodyParams('message') message: string,
     @BodyParams('name') name: string,
