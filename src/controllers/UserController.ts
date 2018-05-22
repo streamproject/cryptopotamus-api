@@ -78,8 +78,8 @@ export class UserController {
     @BodyParams('value') value: string,
   ) {
     const user = await users.findUser(request.decoded.id)
-    console.log(user)
-    const data = stringify({
+
+    const dataAlert = stringify({
       access_token: decrypt(user.streamlabs_token),
       type: 'donation',
       message: `${name} donated ${value} eth`,
@@ -87,23 +87,37 @@ export class UserController {
       duration: '3000',
     })
 
+    const dataDonation = {
+      access_token: decrypt(user.streamlabs_token),
+      name,
+      message,
+      identifier: '123',
+      amount: value,
+      currency: 'USD',
+      skip_alert: 'yes',
+    }
+
     try {
-      const notification = await axios.post('https://streamlabs.com/api/v1.0/alerts', data)
-      return notification.data
+      await axios.post('https://streamlabs.com/api/v1.0/alerts', dataAlert)
+      try {
+        const donation = await axios.post('https://streamlabs.com/api/v1.0/donations', dataDonation)
+        return donation.data
+      } catch (err) {
+        throw new BadRequest(err.response.data)
+      }
     } catch (err) {
-      console.log(err.response.data)
       throw new BadRequest(err.response.data)
     }
   }
 
   @Post('/sendTx')
-  @Authenticated()
   public async sendTx(
     @BodyParams('txHash') txHash: string,
     @BodyParams('message') message: string,
     @BodyParams('name') name: string,
     @BodyParams('value') value: string,
-  ) {
+    @BodyParams('valueUSD') valueUSD: string,
+   ) {
     try {
       const tx = await this.ethService.web3.eth.getTransaction(txHash)
       const recipient = await users.findUserByAddress(tx.to)
@@ -116,19 +130,33 @@ export class UserController {
 
       // TODO validate that user agrees with name
 
-      const data = stringify({
+      const dataAlert = stringify({
         access_token: decrypt(recipient.streamlabs_token),
         type: 'donation',
-        message: `${name} donated ${value} eth`,
+        message: `${name} donated $${valueUSD}`,
         user_message: message,
         duration: '3000',
       })
+      const dataDonation = {
+        access_token: decrypt(recipient.streamlabs_token),
+        name,
+        message,
+        identifier: '123',
+        amount: valueUSD,
+        currency: 'USD',
+        skip_alert: 'yes',
+      }
 
       try {
-        const notification = await axios.post('https://streamlabs.com/api/v1.0/alerts', data)
-        return notification.data
+        await axios.post('https://streamlabs.com/api/v1.0/alerts', dataAlert)
+        try {
+          const donation = await axios.post('https://streamlabs.com/api/v1.0/donations', dataDonation)
+          return donation.data
+        } catch (err) {
+          throw new BadRequest(err.response)
+        }
       } catch (err) {
-        throw new BadRequest(err.response.data)
+        throw new BadRequest(err.response)
       }
 
     } catch (err) {

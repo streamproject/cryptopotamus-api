@@ -53,7 +53,7 @@ export class AuthController {
         }
 
         users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
-        resolve(response.redirect(`${baseUrl}/donate/${data.user.twitch_id}`))
+        resolve(response.redirect(`${baseUrl}/testalerts`))
       })(request, response, () => { })
     })
   }

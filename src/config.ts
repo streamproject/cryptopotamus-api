@@ -16,5 +16,6 @@ export const STREAMLABS_CLIENT_ID = 'PTyYxpMn1xoqMwcKRYDbMFvGoOMTbpHewqE4LzRZ'
 export const STREAMLABS_CLIENT_SECRET = 'Xw405d8tHH8EiWxs0dqaQj1Qf2XRwm8DtBnsYNCD'
 
 export const cryptoPass = 'EwnaBmd80iNwwdSbWNjQn6xuKnRBCMFB'
+export const iv = 'R4f1m1RttaBq6Ukl'
 
 export const baseUrl = ENV === 'production' ? 'https://cryptopotam.us' : 'http://localhost:3000'

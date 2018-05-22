@@ -1,8 +1,7 @@
 import * as crypto from 'crypto'
-import { cryptoPass } from '../config'
+import { cryptoPass, iv } from '../config'
 
-const algorithm = 'aes-256-ctr'
-const iv = crypto.randomBytes(16)
+const algorithm = 'aes-256-cbc'
 
 export function encrypt(text) {
   const cipher = crypto.createCipheriv(algorithm, cryptoPass, iv)
