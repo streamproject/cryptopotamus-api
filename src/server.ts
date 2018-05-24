@@ -27,8 +27,8 @@ const rootDir = path.resolve(__dirname)
     `${rootDir}/middlewares/**/**.js`,
   ],
   logger: {
-    debug: false,
-    logRequest: true,
+    debug: ENV === 'development',
+    logRequest: ENV === 'development',
     requestFields: ['reqId', 'method', 'url', 'headers', 'query', 'params', 'duration'],
   },
 })

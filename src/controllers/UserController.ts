@@ -78,7 +78,6 @@ export class UserController {
     @BodyParams('value') value: string,
   ) {
     const user = await users.findUser(request.decoded.id)
-    console.log(user)
     const data = stringify({
       access_token: decrypt(user.streamlabs_token),
       type: 'donation',
@@ -91,7 +90,6 @@ export class UserController {
       const notification = await axios.post('https://streamlabs.com/api/v1.0/alerts', data)
       return notification.data
     } catch (err) {
-      console.log(err.response.data)
       throw new BadRequest(err.response.data)
     }
   }
