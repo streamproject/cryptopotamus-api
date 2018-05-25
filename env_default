@@ -1,5 +1,8 @@
 PORT=8000
 
+# Switch this to production when deploying
+NODE_ENV=development
+
 PG_DB=<postgres_db>
 PG_HOST=<postgres_hostname>
 PG_USER=<postgres_user>

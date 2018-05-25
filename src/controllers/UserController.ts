@@ -19,22 +19,30 @@ export class UserController {
   public async me(
     @Request() request: Express.Request,
   ) {
-    return axios.get(`https://api.twitch.tv/kraken/users/${request.decoded.id}?client_id=${TWITCH_CLIENT_ID}`,
-      { headers: { Accept: 'application/vnd.twitchtv.v5+json' } },
-    ).then((res) => {
-      return res.data
-    })
+    try {
+      const twitchResponse = await axios.get(
+        `https://api.twitch.tv/kraken/users/${request.decoded.id}?client_id=${TWITCH_CLIENT_ID}`,
+        { headers: { Accept: 'application/vnd.twitchtv.v5+json' } },
+      )
+
+      return twitchResponse.data
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/meById')
   public async meById(
     @BodyParams('channelId') id: string,
   ) {
-    return axios.get(`https://api.twitch.tv/kraken/users/${id}?client_id=${TWITCH_CLIENT_ID}`,
-      { headers: { Accept: 'application/vnd.twitchtv.v5+json' } },
-    ).then((res) => {
-      return res.data
-    })
+    try {
+      const twitchResponse = await axios.get(`https://api.twitch.tv/kraken/users/${id}?client_id=${TWITCH_CLIENT_ID}`,
+        { headers: { Accept: 'application/vnd.twitchtv.v5+json' } },
+      )
+      return twitchResponse.data
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/findUser')
@@ -42,14 +50,22 @@ export class UserController {
   public async findUser(
     @Request() request: Express.Request,
   ) {
-    return users.findUser(request.decoded.id)
+    try {
+      return await users.findUser(request.decoded.id)
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/findUserById')
   public async findUserById(
     @BodyParams('channelId') id: string,
   ) {
-    return users.findUser(id)
+    try {
+      return await users.findUser(id)
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/update')
@@ -58,7 +74,11 @@ export class UserController {
     @Request() request: Express.Request,
     @BodyParams('ethAddress') ethAddress: string,
   ) {
-    return await users.updateUser(request.decoded.id, ethAddress)
+    try {
+      return await users.updateUser(request.decoded.id, ethAddress)
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/delete')
@@ -66,7 +86,11 @@ export class UserController {
   public async delete(
     @Request() request: Express.Request,
   ) {
-    return await users.deleteUser(request.decoded.id)
+    try {
+      return await users.deleteUser(request.decoded.id)
+    } catch (err) {
+      throw new BadRequest(err)
+    }
   }
 
   @Post('/sendTestNotification')
