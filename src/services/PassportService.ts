@@ -23,10 +23,11 @@ export class PassportService implements BeforeRoutesInit {
     this.expressApplication.use(passport.session({ pauseStream }))
 
     passport.use(new twitchStrategy({
-      ...twitchStrategyOptions,
-    },
+        ...twitchStrategyOptions,
+      },
       async (accessToken, refreshToken, profile, done) => {
         let user = await users.findUser(profile.id)
+
         if (!user) {
           user = await users.addNewUser(profile.id)
         }

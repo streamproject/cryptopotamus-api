@@ -19,16 +19,6 @@ const addOrUpdateRow = async <T>(query: pgPromise.TQuery, newRow: T): Promise<T>
   return await postgresdb.one<T>(query, newRow)
 }
 
-export async function postgresdbExists() {
-  try {
-    const obj = await postgresdb.connect()
-    obj.done()
-    return true
-  } catch (err) {
-    return false
-  }
-}
-
 export const users = {
   createTable() {
     return postgresdb.none(`CREATE TABLE users (
@@ -44,10 +34,10 @@ eth_address text)`)
       twitch_id: twitchId,
     }
 
-    return await postgresdb.one<tables.users>(`INSERT INTO users VALUES(
-    $(id),
-    $(twitch_id)
-  ) RETURNING *`, newUser)
+    return await postgresdb.oneOrNone<tables.users>(`INSERT INTO users VALUES(
+      $(id),
+      $(twitch_id)
+    ) RETURNING *`, newUser)
   },
 
   updateUser(twitchId, ethAddress?: string, streamlabsToken?: string) {
@@ -58,13 +48,13 @@ eth_address text)`)
     }
 
     return addOrUpdateRow(`UPDATE users
-        SET (eth_address, streamlabs_token) = (
-          COALESCE($(ethAddress), eth_address),
-          COALESCE($(streamlabsToken), streamlabs_token)
-        )
-        WHERE twitch_id = $(twitchId)
-        RETURNING *
-      `, updatedUser)
+      SET (eth_address, streamlabs_token) = (
+        COALESCE($(ethAddress), eth_address),
+        COALESCE($(streamlabsToken), streamlabs_token)
+      )
+      WHERE twitch_id = $(twitchId)
+      RETURNING *
+    `, updatedUser)
   },
 
   findUser(twitchId: string) {
