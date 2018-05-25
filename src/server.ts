@@ -6,10 +6,12 @@ import * as methodOverride from 'method-override'
 import * as morgan from 'morgan'
 import * as path from 'path'
 import {
-  GlobalAcceptMimesMiddleware, GlobalErrorHandlerMiddleware,
-  ServerLoader, ServerSettings,
+  GlobalAcceptMimesMiddleware,
+  GlobalErrorHandlerMiddleware,
+  ServerLoader,
+  ServerSettings,
 } from 'ts-express-decorators'
-import { ENV, PORT } from './config'
+import { NODE_ENV, PORT } from './config'
 
 const rootDir = path.resolve(__dirname)
 
@@ -21,14 +23,14 @@ const rootDir = path.resolve(__dirname)
     '/api/v1/': `${rootDir}/controllers/**/*.js`,
   },
   acceptMimes: ['application/json'],
-  debug: ENV === 'development',
+  debug: NODE_ENV === 'development',
   componentsScan: [
     `${rootDir}/services/**/**.js`,
     `${rootDir}/middlewares/**/**.js`,
   ],
   logger: {
-    debug: ENV === 'development',
-    logRequest: ENV === 'development',
+    debug: NODE_ENV === 'development',
+    logRequest: NODE_ENV === 'development',
     requestFields: ['reqId', 'method', 'url', 'headers', 'query', 'params', 'duration'],
   },
 })

@@ -1,11 +1,12 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-export const ENV = process.env.NODE_ENV
+export const NODE_ENV = process.env.NODE_ENV
 
 export const INFURA_ACCESS_TOKEN = process.env.INFURA_ACCESS_TOKEN
-export const WEB3_PROVIDER_URI = ENV === 'production' ?
-  'wss://mainnet.infura.io/_ws' : `https://ropsten.infura.io/${INFURA_ACCESS_TOKEN}`
+
+export const WEB3_PROVIDER_URI = NODE_ENV === 'production' ?
+  `https://mainnet.infura.io/${INFURA_ACCESS_TOKEN}` : `https://ropsten.infura.io/${INFURA_ACCESS_TOKEN}`
 
 export const PORT = parseInt(process.env.PORT, 10)
 
@@ -22,4 +23,5 @@ export const STREAMLABS_CLIENT_SECRET = process.env.STREAMLABS_CLIENT_SECRET
 
 export const CRYPTO_PASS = process.env.CRYPTO_PASS
 
-export const BASE_URL = process.env.BASE_URL
+export const WEB_CLIENT_URL = process.env.WEB_CLIENT_URL
+export const API_URL = process.env.API_URL

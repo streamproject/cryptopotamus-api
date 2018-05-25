@@ -21,4 +21,7 @@ INFURA_ACCESS_TOKEN=<infura access token>
 CRYPTO_PASS=<crypto pass>
 
 # url of the web client @ streamproject/cryptopotamus-web]
-BASE_URL=http://localhost:3000
+WEB_CLIENT_URL=http://localhost:3000
+
+# url of the web server
+API_URL=http://localhost:8000/api/v1/
