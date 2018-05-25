@@ -1,7 +1,7 @@
 {
-  "name": "eth-streamlabs",
+  "name": "cryptopotamus-api",
   "version": "1.0.0",
-  "description": "Ethereum widget backend for streamlabs",
+  "description": "API for cryptopotamus",
   "scripts": {
     "start": "yarn run --prod build && yarn run --prod watch",
     "build": "yarn run build-ts",
