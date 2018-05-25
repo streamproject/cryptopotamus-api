@@ -1,0 +1,24 @@
+PORT=8000
+
+PG_DB=<postgres_db>
+PG_HOST=<postgres_hostname>
+PG_USER=<postgres_user>
+PG_PORT=5432
+PG_PASS=<postgres_pass>
+
+# Register a twitch app and provide the info below https://glass.twitch.tv/console/apps
+TWITCH_CLIENT_ID=<twitch_client_id>
+TWITCH_CLIENT_SECRET=<twitch_client_secret>
+
+# Retrieve a client id and secret from streamlabs https://dev.streamlabs.com/v1.0/reference
+STREAMLABS_CLIENT_ID=<streamlabs client id>
+STREAMLABS_CLIENT_SECRET=<stream labs client>
+
+# Register an account on https://infura.io/
+INFURA_ACCESS_TOKEN=<infura access token>
+
+# Generate a password for signing keys
+CRYPTO_PASS=<crypto pass>
+
+# url of the web client @ streamproject/cryptopotamus-web]
+BASE_URL=http://localhost:3000
