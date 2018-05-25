@@ -30,8 +30,15 @@ export async function postgresdbExists() {
 }
 
 export const users = {
-  async addNewUser(twitchId: string) {
+  createTable() {
+    return postgresdb.none(`CREATE TABLE users (
+id text PRIMARY KEY NOT NULL,
+twitch_id INTEGER NOT NULL UNIQUE,
+streamlabs_token text,
+eth_address text)`)
+  },
 
+  async addNewUser(twitchId: string) {
     const newUser = {
       id: genUuid(),
       twitch_id: twitchId,
