@@ -41,7 +41,7 @@ export class AuthController {
     @Request() request: Express.Request,
     @Res() response: Express.Response,
   ) {
-    passportInstance.authenticate('streamlabs', () => {})(request, response, () => { })
+    passportInstance.authenticate('streamlabs', () => { })(request, response, () => { })
   }
 
   @Get('/streamlabs/callback')
@@ -54,9 +54,12 @@ export class AuthController {
         if (err) {
           reject(err)
         }
-
-        users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
-        resolve(response.redirect(`${BASE_URL}/testalerts`))
+        try {
+          users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
+          resolve(response.redirect(`${WEB_CLIENT_URL}/testalerts`))
+        } catch (err) {
+          reject(err)
+        }
       })(request, response, () => { })
     })
   }

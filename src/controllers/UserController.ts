@@ -110,8 +110,6 @@ export class UserController {
       duration: '3000',
       special_text_color: '#6572fd',
     })
-    // TO DO FIX IDENTIFIER
-    // TO DO FIX SPAM TXHASH ENDPOINT
     const dataDonation = {
       access_token: decrypt(user.streamlabs_token),
       name: 'nickname',
@@ -131,10 +129,10 @@ export class UserController {
         throw new BadRequest(err.response.data)
       }
     } catch (err) {
-      throw new BadRequest(err.response)
+      throw new BadRequest(err.response.data)
     }
   }
-
+    // TO DO FIX SPAM TXHASH ENDPOINT
   @Post('/sendTx')
   public async sendTx(
     @BodyParams('txHash') txHash: string,
@@ -179,10 +177,10 @@ export class UserController {
           const donation = await axios.post('https://streamlabs.com/api/v1.0/donations', dataDonation)
           return donation.data
         } catch (err) {
-          throw new BadRequest(err.response)
+          throw new BadRequest(err.response.data)
         }
       } catch (err) {
-        throw new BadRequest(err.response)
+        throw new BadRequest(err.response.data)
       }
 
     } catch (err) {

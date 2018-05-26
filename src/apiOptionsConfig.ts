@@ -30,6 +30,6 @@ export const twitchStrategyOptions = {
 export const streamlabsStrategyOptions = {
   clientID: STREAMLABS_CLIENT_ID,
   clientSecret: STREAMLABS_CLIENT_SECRET,
-  callbackURL: 'http://localhost:8000/api/v1/auth/streamlabs/callback',
+  callbackURL: `${API_URL}/auth/streamlabs/callback`,
   scope: ['alerts.create', 'donations.create'],
 }
