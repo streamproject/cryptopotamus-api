@@ -23,6 +23,9 @@ INFURA_ACCESS_TOKEN=<infura access token>
 # Generate a password for signing keys
 CRYPTO_PASS=<crypto pass>
 
+# Generate an IV for crypting/ decrypting
+IV=<IV>
+
 # url of the web client @ streamproject/cryptopotamus-web]
 WEB_CLIENT_URL=http://localhost:3000
 

@@ -31,5 +31,5 @@ export const streamlabsStrategyOptions = {
   clientID: STREAMLABS_CLIENT_ID,
   clientSecret: STREAMLABS_CLIENT_SECRET,
   callbackURL: `${API_URL}/auth/streamlabs/callback`,
-  scope: 'alerts.create',
+  scope: ['alerts.create', 'donations.create'],
 }
