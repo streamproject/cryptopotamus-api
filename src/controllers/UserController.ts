@@ -150,15 +150,16 @@ export class UserController {
       } else if (tx.value !== value) {
         throw new BadRequest(value)
       }
-
+      // TO DO MAKE THAT BIGNUMBER
       // TODO validate that user agrees with name
       const dataAlert = stringify({
-        image_href: '../assets/logo.png',
+        image_href: 'https://image.ibb.co/cSmao8/logo.png',
         access_token: decrypt(recipient.streamlabs_token),
         type: 'donation',
-        message: `* ${name} * donated * ${Number(value).toFixed(3)} ETH ~($ ${valueUSD}) *`,
+        message: `* ${name} * donated * ${(Number(value) / 1000000000000000000).toFixed(3)} ETH ~($ ${valueUSD}) *`,
         user_message: message,
         duration: '3000',
+        special_text_color: '#6572fd',
       })
 
       const dataDonation = {
@@ -180,7 +181,7 @@ export class UserController {
           throw new BadRequest(err.response.data)
         }
       } catch (err) {
-        throw new BadRequest(err.response.data)
+        throw new BadRequest(err.response)
       }
 
     } catch (err) {
