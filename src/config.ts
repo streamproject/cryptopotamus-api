@@ -22,6 +22,7 @@ export const STREAMLABS_CLIENT_ID = process.env.STREAMLABS_CLIENT_ID
 export const STREAMLABS_CLIENT_SECRET = process.env.STREAMLABS_CLIENT_SECRET
 
 export const CRYPTO_PASS = process.env.CRYPTO_PASS
+export const IV = process.env.IV
 
 export const WEB_CLIENT_URL = process.env.WEB_CLIENT_URL
 export const API_URL = process.env.API_URL

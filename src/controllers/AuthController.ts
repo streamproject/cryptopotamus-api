@@ -55,12 +55,8 @@ export class AuthController {
           reject(err)
         }
 
-        try {
-          users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
-          resolve(response.redirect(`${WEB_CLIENT_URL}/donate/${data.user.twitch_id}`))
-        } catch (err) {
-          reject(err)
-        }
+        users.updateUser(data.user.twitch_id, null, encrypt(data.accessToken))
+        resolve(response.redirect(`${BASE_URL}/testalerts`))
       })(request, response, () => { })
     })
   }
