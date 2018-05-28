@@ -4,7 +4,7 @@ import { Authenticated, BodyParams, Controller, Post, Request } from 'ts-express
 import { BadRequest, NotFound } from 'ts-httpexceptions'
 import * as uuid from 'uuid'
 import { TWITCH_CLIENT_ID } from '../config'
-import { users } from '../db/postgres'
+import { transactions, users } from '../db/postgres'
 import { EthService } from '../services/EthService'
 import { decrypt } from '../utils/crypto'
 
@@ -132,7 +132,7 @@ export class UserController {
       throw new BadRequest(err.response.data)
     }
   }
-    // TO DO FIX SPAM TXHASH ENDPOINT
+  // TO DO FIX SPAM TXHASH ENDPOINT
   @Post('/sendTx')
   public async sendTx(
     @BodyParams('txHash') txHash: string,
@@ -144,14 +144,28 @@ export class UserController {
     try {
       const tx = await this.ethService.web3.eth.getTransaction(txHash)
       const recipient = await users.findUserByAddress(tx.to)
+      let dbTx
+
+      try {
+        dbTx = await transactions.findTrasaction(txHash)
+      } catch (err) {
+        throw new BadRequest(err)
+      }
+
+      if (dbTx) {
+        throw new BadRequest('TxHash has already been used')
+      }
 
       if (!recipient) {
         throw new NotFound(txHash)
       } else if (tx.value !== value) {
         throw new BadRequest(value)
       }
-      // TO DO MAKE THAT BIGNUMBER
-      // TODO validate that user agrees with name
+
+      if (!message) {
+        message = ' '
+      }
+
       const dataAlert = stringify({
         image_href: 'https://image.ibb.co/cSmao8/logo.png',
         access_token: decrypt(recipient.streamlabs_token),
@@ -176,14 +190,18 @@ export class UserController {
         await axios.post('https://streamlabs.com/api/v1.0/alerts', dataAlert)
         try {
           const donation = await axios.post('https://streamlabs.com/api/v1.0/donations', dataDonation)
-          return donation.data
+          try {
+            await transactions.addTransaction(txHash)
+            return donation.data
+          } catch (err) {
+            throw new BadRequest(err.response.data)
+          }
         } catch (err) {
           throw new BadRequest(err.response.data)
         }
       } catch (err) {
         throw new BadRequest(err.response)
       }
-
     } catch (err) {
       throw err
     }
