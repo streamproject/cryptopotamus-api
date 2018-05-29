@@ -20,11 +20,8 @@ STREAMLABS_CLIENT_SECRET=<stream labs client>
 # Register an account on https://infura.io/
 INFURA_ACCESS_TOKEN=<infura access token>
 
-# Generate a password for signing keys
-CRYPTO_PASS=<crypto pass>
-
-# Generate an IV for crypting/ decrypting
-IV=<IV>
+# Generate an encryption key for signing keys
+ENCRYPTION_KEY=<encryption key>
 
 # url of the web client @ streamproject/cryptopotamus-web]
 WEB_CLIENT_URL=http://localhost:3000
