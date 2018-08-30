@@ -1,5 +1,4 @@
 import * as pgPromise from 'pg-promise'
-// import { POSTGRES_DB, POSTGRES_HOST, POSTGRES_PASS, POSTGRES_USER } from '../config'
 import * as genUuid from 'uuid/v4'
 import { PG_DB, PG_HOST, PG_PASS, PG_PORT, PG_USER } from '../config'
 import * as tables from '../models/tables'
@@ -69,4 +68,21 @@ eth_address text)`)
     return postgresdb.none(`DELETE FROM users WHERE twitch_id=$(twitchId)`, { twitchId })
   },
 
+}
+
+export const transactions = {
+  createTable() {
+    return postgresdb.none(`CREATE TABLE transactions (tx_hash text PRIMARY KEY NOT NULL)`)
+  },
+
+  async addTransaction(txHash: string) {
+    return await postgresdb.oneOrNone<tables.transactions>(`INSERT INTO transactions VALUES(
+      $(tx_hash)
+    ) RETURNING *`, { tx_hash: txHash })
+  },
+
+  async findTrasaction(txHash: string) {
+    return await postgresdb.oneOrNone<tables.transactions>(`SELECT * FROM transactions WHERE tx_hash=$(txHash)`,
+      { txHash })
+  },
 }
